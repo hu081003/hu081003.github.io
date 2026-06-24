@@ -1,17 +1,940 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>hu081003 的个人网站</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>胡笑睿 · Xiaorui Hu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 60px; background: #f5f5f5; }
-    h1 { color: #333; }
-    p { color: #666; }
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #fafafa;
+      --surface:   #ffffff;
+      --text:      #1d1d1f;
+      --sub:       #6e6e73;
+      --accent:    #0071e3;
+      --border:    #e0e0e5;
+      --radius:    18px;
+      --max:       780px;
+      --nav-h:     64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', 'PingFang SC', 'Helvetica Neue', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(250,250,250,0.85);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(24px, 5vw, 60px);
+    }
+
+    .nav-logo {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--sub);
+      text-decoration: none;
+      transition: color 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── Layout ── */
+    .container {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 96px 0 80px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type { border-bottom: none; }
+
+    /* ── Hero ── */
+    #home {
+      padding-top: calc(var(--nav-h) + 100px);
+      padding-bottom: 100px;
+      text-align: center;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a8c0ff, #3f87ff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      color: #fff;
+      margin: 0 auto 32px;
+      font-weight: 300;
+      letter-spacing: -1px;
+      box-shadow: 0 8px 32px rgba(0,113,227,0.18);
+    }
+
+    .hero-name {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 300;
+      letter-spacing: -1.5px;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    .hero-name em {
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .hero-tagline {
+      margin-top: 16px;
+      font-size: 18px;
+      color: var(--sub);
+      font-weight: 300;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-desc {
+      margin-top: 24px;
+      font-size: 15px;
+      color: var(--sub);
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+
+    .hero-cta {
+      margin-top: 40px;
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.2s;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #0077ed;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(0,113,227,0.3);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1.5px solid var(--accent);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(0,113,227,0.06);
+      transform: translateY(-1px);
+    }
+
+    /* ── Section headings ── */
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 4vw, 34px);
+      font-weight: 300;
+      letter-spacing: -0.8px;
+      color: var(--text);
+      margin-bottom: 40px;
+      line-height: 1.2;
+    }
+
+    /* ── About ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px 48px;
+    }
+
+    @media (max-width: 600px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+
+    .about-block h3 {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sub);
+      margin-bottom: 8px;
+    }
+
+    .about-block p {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    .about-intro {
+      font-size: 17px;
+      color: var(--text);
+      line-height: 1.9;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    /* ── Skills ── */
+    .skills-group {
+      margin-bottom: 36px;
+    }
+
+    .skills-group-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sub);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 400;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+
+    .tag.accent {
+      background: rgba(0,113,227,0.07);
+      border-color: rgba(0,113,227,0.2);
+      color: var(--accent);
+    }
+
+    /* ── Projects ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: box-shadow 0.25s, transform 0.25s;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .project-card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.08);
+      transform: translateY(-3px);
+    }
+
+    .project-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .project-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: -0.2px;
+    }
+
+    .project-desc {
+      font-size: 14px;
+      color: var(--sub);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .project-tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 3px 10px;
+      border-radius: 980px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--sub);
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Interests / Hobbies ── */
+    .interests-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .interests-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    .interest-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .interest-icon { font-size: 32px; margin-bottom: 10px; }
+
+    .interest-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .interest-desc {
+      font-size: 12px;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    /* ── Timeline ── */
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 36px;
+    }
+
+    .timeline-item:last-child { margin-bottom: 0; }
+
+    .timeline-dot {
+      position: absolute;
+      left: -25px;
+      top: 6px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+
+    .timeline-date {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sub);
+      margin-bottom: 4px;
+    }
+
+    .timeline-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .timeline-sub {
+      font-size: 14px;
+      color: var(--sub);
+      margin-bottom: 8px;
+    }
+
+    .timeline-body {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── Goals ── */
+    .goals-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .goal-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 20px;
+    }
+
+    .goal-icon { font-size: 22px; flex-shrink: 0; margin-top: 1px; }
+
+    .goal-text h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .goal-text p {
+      font-size: 13px;
+      color: var(--sub);
+      line-height: 1.6;
+    }
+
+    /* ── Contact ── */
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 400px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      text-decoration: none;
+      color: inherit;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+
+    .contact-item:hover {
+      box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      transform: translateX(4px);
+    }
+
+    .contact-icon { font-size: 20px; flex-shrink: 0; }
+
+    .contact-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .contact-value {
+      font-size: 13px;
+      color: var(--sub);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      font-size: 13px;
+      color: var(--sub);
+      border-top: 1px solid var(--border);
+    }
+
+    footer span { color: var(--accent); }
+
+    /* ── Scroll fade-in ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* ── Quotes / callout ── */
+    .callout {
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      background: rgba(0,113,227,0.04);
+      border-radius: 0 10px 10px 0;
+      margin: 28px 0;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.8;
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
-  <h1>你好，我是 hu081003</h1>
-  <p>欢迎来到我的 GitHub Pages 网站！</p>
+
+  <!-- ── Navigation ── -->
+  <nav>
+    <a class="nav-logo" href="#home">胡笑睿</a>
+    <ul class="nav-links">
+      <li><a href="#about">关于</a></li>
+      <li><a href="#skills">技能</a></li>
+      <li><a href="#projects">项目</a></li>
+      <li><a href="#interests">兴趣</a></li>
+      <li><a href="#timeline">经历</a></li>
+      <li><a href="#goals">目标</a></li>
+      <li><a href="#contact">联系</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section id="home">
+    <div class="container">
+      <div class="avatar">胡</div>
+      <h1 class="hero-name"><em>胡笑睿</em> · Xiaorui Hu</h1>
+      <p class="hero-tagline">高中生 · 终身学习者 · 皇室战争玩家</p>
+      <p class="hero-desc">
+        来自中国的高中生，热衷于用技术探索世界，<br />
+        同时备战 SAT &amp; IELTS，追求简约与深度并存的生活方式。
+      </p>
+      <div class="hero-cta">
+        <a href="#projects" class="btn btn-primary">查看我的项目</a>
+        <a href="#contact" class="btn btn-ghost">联系我</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About ── -->
+  <section id="about">
+    <div class="container fade-in">
+      <p class="section-label">About</p>
+      <h2 class="section-title">关于我</h2>
+
+      <p class="about-intro">
+        你好！我叫胡笑睿，目前就读高中二年级。
+        我对编程、数据分析和语言学习都抱有浓厚的热情——
+        既想用代码解决真实问题，也希望通过语言打开更广阔的世界。
+      </p>
+
+      <div class="callout">
+        "简约不是减少，而是剔除不必要，让真正重要的东西发光。"
+      </div>
+
+      <div class="about-grid">
+        <div class="about-block">
+          <h3>学业</h3>
+          <p>高中二年级，正在备考 SAT（目标 1500+）和 IELTS（目标 Band 6.5），同时深入学习数学与计算机科学。</p>
+        </div>
+        <div class="about-block">
+          <h3>技术</h3>
+          <p>热爱前端开发与数据可视化，喜欢把复杂的信息用简洁的界面呈现出来，信奉极简主义设计美学。</p>
+        </div>
+        <div class="about-block">
+          <h3>语言</h3>
+          <p>母语中文，英语正在系统提升中。相信语言是思维的容器，不同的语言带来不同的思考方式。</p>
+        </div>
+        <div class="about-block">
+          <h3>个性</h3>
+          <p>注重细节，享受专注状态下的心流体验。喜欢有规律的日常，相信习惯的力量大于短暂的爆发。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Skills ── -->
+  <section id="skills">
+    <div class="container fade-in">
+      <p class="section-label">Skills</p>
+      <h2 class="section-title">技能与工具</h2>
+
+      <div class="skills-group">
+        <p class="skills-group-title">编程语言</p>
+        <div class="tags">
+          <span class="tag accent">Python</span>
+          <span class="tag accent">JavaScript</span>
+          <span class="tag">HTML / CSS</span>
+          <span class="tag">Markdown</span>
+        </div>
+      </div>
+
+      <div class="skills-group">
+        <p class="skills-group-title">工具与平台</p>
+        <div class="tags">
+          <span class="tag">GitHub</span>
+          <span class="tag">GitHub Pages</span>
+          <span class="tag">VS Code</span>
+          <span class="tag">Git</span>
+          <span class="tag">Figma（学习中）</span>
+        </div>
+      </div>
+
+      <div class="skills-group">
+        <p class="skills-group-title">数据与分析</p>
+        <div class="tags">
+          <span class="tag accent">数据整理</span>
+          <span class="tag">Excel / 表格</span>
+          <span class="tag">赛事数据分析</span>
+          <span class="tag">可视化图表</span>
+        </div>
+      </div>
+
+      <div class="skills-group">
+        <p class="skills-group-title">语言能力</p>
+        <div class="tags">
+          <span class="tag accent">中文（母语）</span>
+          <span class="tag">英语（备考中，IELTS 目标 6.5）</span>
+        </div>
+      </div>
+
+      <div class="skills-group">
+        <p class="skills-group-title">软技能</p>
+        <div class="tags">
+          <span class="tag">时间管理</span>
+          <span class="tag">写作与表达</span>
+          <span class="tag">独立研究</span>
+          <span class="tag">细节把控</span>
+          <span class="tag">自我驱动</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Projects ── -->
+  <section id="projects">
+    <div class="container fade-in">
+      <p class="section-label">Projects</p>
+      <h2 class="section-title">我的项目</h2>
+
+      <div class="projects-grid">
+        <a href="https://hu081003.github.io" target="_blank" class="project-card">
+          <div class="project-icon">🌐</div>
+          <div class="project-name">个人网站</div>
+          <div class="project-desc">基于 GitHub Pages 搭建的个人主页，追求极简高级的视觉风格，持续迭代优化中。</div>
+          <div class="project-tags">
+            <span class="project-tag">HTML</span>
+            <span class="project-tag">CSS</span>
+            <span class="project-tag">GitHub Pages</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/hu081003" target="_blank" class="project-card">
+          <div class="project-icon">📊</div>
+          <div class="project-name">CNCR 赛事数据分析</div>
+          <div class="project-desc">对皇室战争 CNCR 赛事进行深度数据分析，包括选手表现统计、赛事经济文档整理与可视化。</div>
+          <div class="project-tags">
+            <span class="project-tag">数据分析</span>
+            <span class="project-tag">Python</span>
+            <span class="project-tag">可视化</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/hu081003" target="_blank" class="project-card">
+          <div class="project-icon">📝</div>
+          <div class="project-name">IELTS 备考笔记</div>
+          <div class="project-desc">系统整理的雅思备考资料，包括口语 Part 2 范文、核心词汇表和 Band 6+ 表达句型库。</div>
+          <div class="project-tags">
+            <span class="project-tag">英语学习</span>
+            <span class="project-tag">IELTS</span>
+            <span class="project-tag">写作</span>
+          </div>
+        </a>
+
+        <a href="https://github.com/hu081003" target="_blank" class="project-card">
+          <div class="project-icon">🎮</div>
+          <div class="project-name">游戏策略研究</div>
+          <div class="project-desc">对皇室战争卡组策略与竞技元素进行研究，结合数据分析探索最优卡组搭配与出牌逻辑。</div>
+          <div class="project-tags">
+            <span class="project-tag">Clash Royale</span>
+            <span class="project-tag">策略分析</span>
+            <span class="project-tag">数据驱动</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Interests ── -->
+  <section id="interests">
+    <div class="container fade-in">
+      <p class="section-label">Interests</p>
+      <h2 class="section-title">兴趣与爱好</h2>
+
+      <div class="interests-grid">
+        <div class="interest-card">
+          <div class="interest-icon">🎮</div>
+          <div class="interest-name">皇室战争</div>
+          <div class="interest-desc">CNCR 赛事爱好者，偏好空格键射击操作，深入研究竞技策略</div>
+        </div>
+        <div class="interest-card">
+          <div class="interest-icon">💻</div>
+          <div class="interest-name">前端开发</div>
+          <div class="interest-desc">热衷构建简洁美观的界面，信奉极简主义设计哲学</div>
+        </div>
+        <div class="interest-card">
+          <div class="interest-icon">📖</div>
+          <div class="interest-name">早晨阅读</div>
+          <div class="interest-desc">每天 6:30 起床阅读 30-40 分钟，为一天设定积极基调</div>
+        </div>
+        <div class="interest-card">
+          <div class="interest-icon">🌍</div>
+          <div class="interest-name">语言学习</div>
+          <div class="interest-desc">备考 IELTS & SAT，相信语言是打开世界的钥匙</div>
+        </div>
+        <div class="interest-card">
+          <div class="interest-icon">📊</div>
+          <div class="interest-name">数据分析</div>
+          <div class="interest-desc">用数字讲故事，喜欢从原始数据中发现规律与洞见</div>
+        </div>
+        <div class="interest-card">
+          <div class="interest-icon">✍️</div>
+          <div class="interest-name">写作</div>
+          <div class="interest-desc">喜欢用文字整理思绪，从学术写作到创意写作都有涉猎</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Timeline ── -->
+  <section id="timeline">
+    <div class="container fade-in">
+      <p class="section-label">Timeline</p>
+      <h2 class="section-title">成长经历</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2026 · 现在</div>
+          <div class="timeline-title">个人网站上线</div>
+          <div class="timeline-sub">GitHub Pages · hu081003.github.io</div>
+          <div class="timeline-body">正式搭建个人主页，追求极简 Apple 风格设计，持续迭代优化，将其打造成个人品牌展示空间。</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2026 · 高二下</div>
+          <div class="timeline-title">IELTS &amp; SAT 双线备考</div>
+          <div class="timeline-sub">目标：IELTS Band 6.5 · SAT 1500+</div>
+          <div class="timeline-body">制定精细化备考计划，系统学习雅思口语 Part 2 & Part 3，同时备战 9 月与 10 月的 SAT 考试。</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2025–2026</div>
+          <div class="timeline-title">CNCR 赛事数据分析</div>
+          <div class="timeline-sub">皇室战争竞技赛事</div>
+          <div class="timeline-body">深入参与 CNCR 赛事数据的整理与分析工作，撰写赛事经济文档，积累了数据分析的实战经验。</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2024 · 高一</div>
+          <div class="timeline-title">开始系统学习编程</div>
+          <div class="timeline-sub">Python · HTML/CSS · JavaScript</div>
+          <div class="timeline-body">从零开始学习前端开发与 Python，逐渐建立起用技术解决问题的思维方式，并将其应用于学习与生活。</div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-dot"></div>
+          <div class="timeline-date">2024</div>
+          <div class="timeline-title">养成晨间阅读习惯</div>
+          <div class="timeline-sub">每日 30-40 分钟</div>
+          <div class="timeline-body">将晨间阅读固定为每日例行任务，从最初的"任务感"转变为真正期待的时光，并持续坚持至今。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Goals ── -->
+  <section id="goals">
+    <div class="container fade-in">
+      <p class="section-label">Goals</p>
+      <h2 class="section-title">近期目标</h2>
+
+      <div class="goals-list">
+        <div class="goal-item">
+          <div class="goal-icon">🎯</div>
+          <div class="goal-text">
+            <h4>IELTS Band 6.5</h4>
+            <p>在 9 月考试中实现雅思综合 6.5 的目标，当前口语水平 5.5，通过系统练习口语 cue cards 与写作提升分数。</p>
+          </div>
+        </div>
+        <div class="goal-item">
+          <div class="goal-icon">📐</div>
+          <div class="goal-text">
+            <h4>SAT 1500+</h4>
+            <p>9 月中旬与 10 月双考备战，系统强化数学与阅读写作模块，争取冲击 1500+ 的目标分数。</p>
+          </div>
+        </div>
+        <div class="goal-item">
+          <div class="goal-icon">🌐</div>
+          <div class="goal-text">
+            <h4>打磨个人网站</h4>
+            <p>持续完善 hu081003.github.io，追求 Apple 级别的简约高级感，使其成为真正代表自己的线上名片。</p>
+          </div>
+        </div>
+        <div class="goal-item">
+          <div class="goal-icon">💡</div>
+          <div class="goal-text">
+            <h4>完成一个有意义的开源项目</h4>
+            <p>将 CNCR 数据分析或学习工具做成完整的开源项目，提交到 GitHub，积累真实的技术作品集。</p>
+          </div>
+        </div>
+        <div class="goal-item">
+          <div class="goal-icon">📚</div>
+          <div class="goal-text">
+            <h4>保持晨间阅读</h4>
+            <p>坚持每日 6:30 起床，30-40 分钟专注阅读，不刷手机，用知识积累为长期成长打底。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact ── -->
+  <section id="contact">
+    <div class="container fade-in">
+      <p class="section-label">Contact</p>
+      <h2 class="section-title">联系我</h2>
+      <p style="font-size:15px;color:var(--sub);margin-bottom:32px;line-height:1.8;">
+        欢迎通过以下方式找到我。无论是技术交流、学习合作，<br />
+        还是皇室战争的切磋，都欢迎联系 👋
+      </p>
+
+      <div class="contact-links">
+        <a href="https://github.com/hu081003" target="_blank" class="contact-item">
+          <span class="contact-icon">🐙</span>
+          <div>
+            <div class="contact-label">GitHub</div>
+            <div class="contact-value">github.com/hu081003</div>
+          </div>
+        </a>
+        <a href="https://hu081003.github.io" target="_blank" class="contact-item">
+          <span class="contact-icon">🌐</span>
+          <div>
+            <div class="contact-label">个人网站</div>
+            <div class="contact-value">hu081003.github.io</div>
+          </div>
+        </a>
+        <a href="mailto:your@email.com" class="contact-item">
+          <span class="contact-icon">✉️</span>
+          <div>
+            <div class="contact-label">邮件</div>
+            <div class="contact-value">2136496636@qq.com</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="container">
+      <p>© 2026 <span>胡笑睿</span> · Built with ❤️ on GitHub Pages</p>
+      <p style="margin-top:8px;font-size:12px;">简约不是终点，是起点。</p>
+    </div>
+  </footer>
+
+  <!-- ── Scroll Animation ── -->
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Active nav link highlight
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(a => a.style.color = '');
+          const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+          if (active) active.style.color = 'var(--accent)';
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+
+    sections.forEach(s => navObserver.observe(s));
+  </script>
 </body>
 </html>
